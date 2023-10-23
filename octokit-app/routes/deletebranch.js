@@ -7,15 +7,12 @@ router.get('/delete/:owner/:repo/:branchName', async (req, res) => {
   const { owner, repo, branchName } = req.params;
   
   // Update the author information
-  const author = {
-    name: 'GOWTHAM',
-    email: 'gowthamredddyiv@gmail.com',
-  };
+  const author = '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';
   
   try {
     // Delete the specified branch
     await octokit.git.deleteRef({
-      owner: owner,
+      owner: 'GOWTHAM',
       repo: repo,
       ref: `heads/${branchName}`,
     });
