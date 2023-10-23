@@ -7,15 +7,12 @@ router.get('/create/:owner/:repo/:branchName/:baseCommitSHA', async (req, res) =
   const { owner, repo, branchName, baseCommitSHA } = req.params;
   
   // Update the author information
-  const author = {
-    name: 'GOWTHAM',
-    email: 'gowthamredddyiv@gmail.com',
-  };
+  const author = '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';
   
   try {
     // Create the new branch based on the specified base commit SHA
     const response = await octokit.git.createRef({
-      owner: owner,
+      owner: GOWTHAM,
       repo: repo,
       ref: `refs/heads/${branchName}`,
       sha: baseCommitSHA,
