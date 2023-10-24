@@ -3,33 +3,22 @@ const octokit = require('../github'); // Import Octokit
 const router = express.Router();
 
 // Route to create a new branch in a GitHub repository
-router.get('/create/:owner/:repo/:branchName/:baseCommitSHA', async (req, res) => {
-  const { owner, repo, branchName, baseCommitSHA } = req.params;
-  
-  // Update the author information
-  const author = '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';
-  
-  try {
-    // Create the new branch based on the specified base commit SHA
+router.get('/create/:owner/:repo/:branchName', async (req, res) => {
+    const {owner,repo,branchName} = req.params;
+    const commits = await octokit.repos.listCommits({
+            owner,
+            repo
+    });
+    
+        const latestCommit = commits.data[0].sha;
     const response = await octokit.git.createRef({
-      owner: GOWTHAM,
-      repo: repo,
-      ref: `refs/heads/${branchName}`,
-      sha: baseCommitSHA,
-    });
-
-    // Construct a detailed response with branch and commit details
-    const branch = response.data.ref;
-    const newCommitSHA = response.data.object.sha;
-
-    res.status(201).json({
-      message: `Branch "${branchName}" created successfully.`,
-      branch: branch,
-      newCommitSHA: newCommitSHA,
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+        owner,
+        repo,
+        ref: `refs/heads/${branchName}`,
+        sha: latestCommit,
+      });
+      console.log(response);
+      res.json("SuccessFull");
 });
 
 module.exports = router;
