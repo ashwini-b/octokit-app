@@ -2,27 +2,25 @@ const express = require('express');
 const octokit = require('../github'); // Import Octokit
 const router = express.Router();
 
-// Route to delete an existing branch in a GitHub repository
+// Route to delete a branch in a GitHub repository
 router.get('/delete/:owner/:repo/:branchName', async (req, res) => {
-  const { owner, repo, branchName } = req.params;
-  
-  // Update the author information
-  const author = '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';
-  
-  try {
-    // Delete the specified branch
-    await octokit.git.deleteRef({
-      owner: 'GOWTHAM',
-      repo: repo,
-      ref: `heads/${branchName}`,
-    });
+    const { owner, repo, branchName } = req.params;
+    
+    try {
+        // Get the SHA of the branch you want to delete
+        const branchRef = `heads/${branchName}`;
+        const refResponse = await octokit.git.getRef({ owner, repo, ref: `heads/${branchName}` });
+        const branchSha = refResponse.data.object.sha;
 
-    res.status(200).json({
-      message: `Branch "${branchName}" deleted successfully.`,
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+        // Delete the branch
+        const deleteResponse = await octokit.git.deleteRef({ owner, repo, ref: `heads/${branchName}` });
+        
+        console.log(deleteResponse);
+        res.json("Branch has been successfully deleted.");
+    } catch (error) {
+        console.error("Error deleting branch:", error);
+        res.status(500).json("Error deleting branch.");
+    }
 });
 
 module.exports = router;
