@@ -1,7 +1,7 @@
 const express = require('express');
 const octokit = require('../github'); // Import Octokit
 const router = express.Router();
-router.get('/create/:owner/:repo/:branchName', async (req, res) => {      // Route to create a new branch in a GitHub repository
+router.post('/create/:owner/:repo/:branchName', async (req, res) => {      // Route to create a new branch in a GitHub repository
     const {owner,repo,branchName} = req.params;
     const commits = await octokit.repos.listCommits({
             owner,
