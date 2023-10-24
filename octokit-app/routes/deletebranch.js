@@ -1,7 +1,7 @@
 const express = require('express');
 const octokit = require('../github'); // Import Octokit
 const router = express.Router();
-router.get('/delete/:owner/:repo/:branchName', async (req, res) => {       // Route to delete a branch in a GitHub repository
+router.delete('/delete/:owner/:repo/:branchName', async (req, res) => {       // Route to delete a branch in a GitHub repository
     const { owner, repo, branchName } = req.params; 
         try {                                                              // Get the SHA of the branch you want to delete
         const branchRef = `heads/${branchName}`;
